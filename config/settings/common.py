@@ -46,7 +46,8 @@ DJANGO_APPS = (
     'django.contrib.staticfiles',
 
     # Admin
-    'django.contrib.admin',
+    #'django.contrib.admin',
+    'alameda.apps.AdminConfig',
     'django_admin_listfilter_dropdown',
 )
 
