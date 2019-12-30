@@ -127,6 +127,7 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': env.db('DJANGO_DATABASE_URL', default='sqlite:///matorral.db'),
+    'remote': env.db('DJANGO_REMOTE_DATABASE_URL')
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
