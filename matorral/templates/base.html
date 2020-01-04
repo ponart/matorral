@@ -45,7 +45,7 @@
             </h1>
         </a>
 
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" data-analytics-category="auth">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -117,7 +117,7 @@
       {% if messages %}
         {% for message in messages %}
         <div class="notification is-primary {% if message.tags %}{{ message.tags }}{% endif %}">
-          <button class="delete"></button>
+          <button class="delete" data-analytics-category="error-message"></button>
           <p>{{ message }}</p>
         </div>
         {% endfor %}
@@ -132,15 +132,15 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Modal title</p>
-          <button class="delete" aria-label="close"></button>
+          <button class="delete" aria-label="close" data-analytics-category="modal"></button>
         </header>
         <section class="modal-card-body">
           <iframe src="" style="width: 100%;">
           </iframe>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-link">Save changes</button>
-          <button class="button">Cancel</button>
+          <button class="button is-link" data-analytics-category="modal">Save changes</button>
+          <button class="button" data-analytics-category="modal">Cancel</button>
         </footer>
       </div>
     </div
@@ -320,5 +320,23 @@
         }
       })
     });
+
+    document.querySelectorAll('.button').forEach(($button) => {
+      $button.addEventListener('click', function(event) {
+        const dataset = event.target.dataset;
+        if (dataset.gaAction) {
+          gtag('event', dataset.gaAction, {
+            'event_label': dataset.gaLabel,
+            'event_category': dataset.gaCategory
+          });
+        } else {
+          gtag('event', 'clicked', {
+            'event_label': event.target.textContent.trim(),
+            'event_category': 'button'
+          });
+        }
+      });
+    });
+
   </script>
 </html>
