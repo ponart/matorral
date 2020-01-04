@@ -204,7 +204,7 @@
             </td>
             <td>
               {% if story.epic %}
-              <a href="{% url 'stories:epic-detail' story.epic.id %}" {% if story.is_done %}class="has-text-grey-dark"{% endif %}>
+              <a href="{% url 'stories:epic-detail' story.epic.id %}?group_by=sprint" {% if story.is_done %}class="has-text-grey-dark"{% endif %}>
                 {{ story.epic.title }}
               </a>
               {% endif %}

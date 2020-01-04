@@ -29,7 +29,7 @@
     </td>
     <td>#{{ sprint.id }}</td>
     <td>
-      <a href="{% url 'sprints:sprint-detail' sprint.id %}" {% if sprint.is_done %}class="has-text-grey-dark"{% endif %}>
+      <a href="{% url 'sprints:sprint-detail' sprint.id %}?group_by=epic" {% if sprint.is_done %}class="has-text-grey-dark"{% endif %}>
         <strong>{{ sprint.title }}</strong><br/>
       </a>
     </td>

@@ -28,7 +28,7 @@
     </td>
     <td>#{{ epic.id }}</td>
     <td>
-      <a href="{% url 'stories:epic-detail' epic.id %}" {% if epic.is_done %}class="has-text-grey-dark"{% endif %}>
+      <a href="{% url 'stories:epic-detail' epic.id %}?group_by=sprint" {% if epic.is_done %}class="has-text-grey-dark"{% endif %}>
         <strong>{{ epic.title }}</strong><br/>
       </a>
       {% for tag in epic.tags.all %}
