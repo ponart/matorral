@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load stories_extras %}
 
 {% block object_list_url %}{% url 'stories:epic-list' %}{% endblock %}
 
@@ -58,7 +59,7 @@
 			</div>
 
 			<div class="content">
-				{{ epic.description|default:'' }}<br/><br/>
+				{{ epic.description|default:''|render_markdown }}<br/><br/>
 				<div class="field is-grouped is-grouped-multiline">
 					<div class="control">
 						<div class="tags has-addons">

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load stories_extras %}
 
 {% block object_list_url %}{% url 'stories:story-list' %}{% endblock %}
 
@@ -66,7 +67,7 @@
 			</div>
 
 			<div class="content">
-				{{ story.description|default:'' }}<br/><br/>
+				{{ story.description|default:''|render_markdown }}<br/><br/>
 				<div class="field is-grouped is-grouped-multiline">
 					<div class="control">
 						<div class="tags has-addons">

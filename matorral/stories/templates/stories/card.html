@@ -1,3 +1,4 @@
+{% load stories_extras %}
 <div class="is-inline-block card">
   <div class="card-content">
     <div class="media">
@@ -13,7 +14,7 @@
     </div>
 
     <div class="content">
-      {{ story.description|truncatechars:350 }} <a>@{{ story.requester.username }}</a>.
+      {{ story.description|render_markdown:40 }} <a>@{{ story.requester.username }}</a>.
       {% for tag in story.tags.all %}
         <a href="#">#{{ tag.name }}</a>
       {% endfor %}
