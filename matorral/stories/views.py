@@ -35,10 +35,23 @@ class EpicDetailView(DetailView):
         queryset = self.get_object().story_set.select_related('requester', 'assignee', 'sprint', 'state')
 
         config = dict(
-            sprint=('sprint__starts_at', lambda story: story.sprint and story.sprint.title or 'No sprint'),
-            state=('state__slug', lambda story: story.state.name),
-            requester=('requester__id', lambda story: story.requester and story.requester.username or 'Unset'),
-            assignee=('assignee__id', lambda story: story.assignee and story.assignee.username or 'Unassigned'),
+            sprint=(
+                'sprint__starts_at', lambda story: story.sprint
+                and (story.sprint.starts_at, story.sprint.title) or (0, 'No sprint')
+            ),
+            state=(
+                'state__slug', lambda story: (story.state.stype, story.state.name)
+            ),
+            requester=(
+                'requester__id', lambda story: story.requester and
+                (story.requester.username, story.requester.username)
+                or (0, 'Unset')
+            ),
+            assignee=(
+                'assignee__id', lambda story: story.assignee
+                and (story.assignee.username, story.assignee.username)
+                or (0, 'Unassigned')
+            ),
         )
 
         group_by = self.request.GET.get('group_by')
@@ -49,7 +62,7 @@ class EpicDetailView(DetailView):
             return [(None, queryset)]
         else:
             queryset = queryset.order_by(order_by)
-            foo = [(t[0], list(t[1])) for t in groupby(queryset, key=fx)]
+            foo = [(t[0][1], list(t[1])) for t in groupby(queryset, key=fx)]
             return foo
 
     def get_context_data(self, **kwargs):

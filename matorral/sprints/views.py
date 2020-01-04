@@ -32,10 +32,19 @@ class SprintDetailView(DetailView):
             .order_by('epic__priority', 'priority')
 
         config = dict(
-            epic=('epic__name', lambda story: story.epic and story.epic.title or 'No Epic'),
-            state=('state__slug', lambda story: story.state.name),
-            requester=('requester__username', lambda story: story.requester and story.requester.username or 'Unset'),
-            assignee=('assignee__username', lambda story: story.assignee and story.assignee.username or 'Unassigned'),
+            epic=(
+                'epic__name', lambda story: story.epic and\
+                (story.epic.priority,  story.epic.title) or (0,  'No Epic')),
+            state=(
+                'state__slug', lambda story:\
+                (story.state.stype, story.state.name)),
+            requester=(
+                'requester__username', lambda story:\
+                story.requester and (story.requester.username, story.requester.username)\
+                or (0, 'Unset')),
+            assignee=(
+                'assignee__username', lambda story: story.assignee and\
+                (story.assignee.username, story.assignee.username) or (0, 'Unassigned')),
         )
 
         group_by = self.request.GET.get('group_by')
@@ -46,7 +55,7 @@ class SprintDetailView(DetailView):
             return [(None, queryset)]
         else:
             queryset = queryset.order_by(order_by)
-            foo = [(t[0], list(t[1])) for t in groupby(queryset, key=fx)]
+            foo = [(t[0][1], list(t[1])) for t in groupby(queryset, key=fx)]
             return foo
 
     def get_context_data(self, **kwargs):
