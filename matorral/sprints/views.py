@@ -3,7 +3,7 @@ from itertools import groupby
 import ujson
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, QueryDict
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
@@ -132,7 +132,21 @@ class BaseListView(ListView):
         context = super().get_context_data(**kwargs)
 
         if self.request.GET.get('q') is not None:
-            context['show_all_url'] = self.request.path
+            full_url = self.request.path
+
+            qd = QueryDict(mutable=True)
+
+            for param in ('to-epic', 'to-sprint'):
+                value = self.request.GET.get(param)
+                if value is not None:
+                    qd[param] = value
+
+            qs = qd.urlencode()
+
+            if qs:
+                full_url += '?' + qs
+
+            context['show_all_url'] = full_url
 
         context['title'] = self.model._meta.verbose_name_plural.capitalize()
         context['singular_title'] = self.model._meta.verbose_name.capitalize()
