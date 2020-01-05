@@ -106,11 +106,14 @@ class SprintViewSet(viewsets.ModelViewSet):
 
 
 class BaseListView(ListView):
-    paginate_by = 10
 
     filter_fields = {}
     select_related = None
     prefetch_related = None
+
+    @property
+    def paginate_by(self):
+        return self.request.GET.get('limit', 15)
 
     def _build_filters(self, q):
         params = {}
